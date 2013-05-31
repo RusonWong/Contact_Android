@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white">
+   	
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <include android:id="@+id/main_page_title" 
+		    		layout="@layout/head"/>
+    	
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical">
+	        
+	   		<TextView android:layout_width="wrap_content"
+	   		    android:layout_height="wrap_content"
+	   		    android:text="请选择范围"
+	   		    android:layout_marginLeft="10dp"
+	   		    android:layout_marginTop="20dp"
+	   		    android:textSize="20sp"
+	   		    android:textColor="@color/blue"/>
+	   		<View  
+					   android:layout_width="fill_parent"  
+					   android:layout_height="2dp" 
+					   android:layout_marginLeft="10dp"
+					   android:layout_marginRight="10dp"
+					   android:background="@color/blue"  
+				/>
+	   		<LinearLayout 
+	   		    android:layout_height="wrap_content"
+	   		    android:layout_width="match_parent"
+	   		    android:layout_marginLeft="10dp"
+	   		    android:layout_marginRight="10dp"
+	   		    android:orientation="vertical"
+	   		    >
+	   		    
+	   		    <LinearLayout 
+	   		        android:layout_width="match_parent"
+	                android:layout_height="50dp" 
+	                android:layout_marginRight="5dp"
+	                android:gravity="center_vertical"
+	                android:orientation="horizontal">
+		                
+		   		        <TextView android:layout_width="0dp"
+		   		            android:layout_height="40dp"
+		   		            android:layout_weight="1"
+		   		            android:textColor="@color/grey"
+		   		            android:textSize="16sp"
+		   		            android:text="大类"
+		   		            android:gravity="center"/>
+		   		        
+			   		    <Spinner
+			                android:id="@+id/org_spinner"
+			                android:layout_width="0dp"
+			                android:layout_weight="5"
+			                android:layout_height="40dp"
+			                android:layout_marginLeft="3dp"
+			                android:textColor="@color/black"
+			                android:clickable="false"
+			                android:background="@drawable/blank"
+			                />
+			   		    <Button 
+			   		        android:id="@+id/org_select_btn"
+			   		        android:layout_width="wrap_content"
+			                android:layout_height="40dp" 
+			                android:background="@drawable/select_btn_selector"
+			                />
+				</LinearLayout>
+				
+	   		    <View  
+					   android:layout_width="fill_parent"  
+					   android:layout_height="1dp" 
+					   android:background="@color/gainsboro"  
+				/>
+	   		    
+	   		      <LinearLayout 
+	   		        android:layout_width="match_parent"
+	                android:layout_height="50dp" 
+	                android:layout_marginRight="5dp"
+	                android:gravity="center_vertical"
+	                android:orientation="horizontal">
+		                
+		   		        <TextView android:layout_width="0dp"
+		   		            android:layout_height="40dp"
+		   		            android:layout_weight="1"
+		   		            android:textColor="@color/grey"
+		   		            android:textSize="16sp"
+		   		            android:text="单位"
+		   		            android:gravity="center"/>
+		   		        
+			   		    <Spinner
+			                android:id="@+id/inst_spinner"
+			                android:layout_width="0dp"
+			                android:layout_weight="5"
+			                android:layout_height="40dp"
+			                android:layout_marginLeft="3dp"
+			               	android:textColor="@color/black"
+			                android:clickable="false"
+			                android:background="@drawable/blank"
+			                />
+			   		     <Button 
+			   		        android:id="@+id/inst_select_btn"
+			   		        android:layout_width="wrap_content"
+			                android:layout_height="40dp" 
+			                android:background="@drawable/select_btn_selector"
+			                />
+				</LinearLayout>
+				
+	   		    <View  
+					   android:layout_width="fill_parent"  
+					   android:layout_height="1dp" 
+					   android:background="@color/gainsboro"  
+				/>
+	   		      
+	   		        <LinearLayout 
+	   		        android:layout_width="match_parent"
+	                android:layout_height="50dp" 
+	                android:gravity="center_vertical"
+	                android:layout_marginRight="5dp"
+	                android:orientation="horizontal">
+		                
+		   		         <TextView android:layout_width="0dp"
+		   		            android:layout_height="40dp"
+		   		            android:layout_weight="1"
+		   		            android:textColor="@color/grey"
+		   		            android:textSize="16sp"
+		   		            android:text="部门"
+		   		            android:gravity="center"/>
+		   		        
+			   		    <Spinner
+			                android:id="@+id/dept_spinner"
+			                android:layout_width="0dp"
+			                android:layout_weight="5"
+			                android:layout_height="40dp"
+			                android:layout_marginLeft="3dp"
+			                android:textColor="@color/black"
+			                android:clickable="false"
+			                android:background="@drawable/blank"
+			                />
+			   		    <Button 
+			   		        android:id="@+id/dept_select_btn"
+			   		        android:layout_width="wrap_content"
+			                android:layout_height="40dp" 
+			                android:background="@drawable/select_btn_selector"/>
+				</LinearLayout>
+				
+	   		</LinearLayout>
+	   		
+	   		<TextView android:layout_width="wrap_content"
+	   		    android:layout_height="wrap_content"
+	   		    android:text="请输入姓名"
+	   		    android:layout_marginLeft="10dp"
+	   		    android:layout_marginTop="30dp"
+	   		    android:textSize="20sp"
+	   		    android:textColor="@color/blue"/>
+	   		<View  
+					  android:layout_width="fill_parent"  
+					  android:layout_height="2dp" 
+					  android:layout_marginLeft="10dp"
+					  android:layout_marginRight="10dp"
+					  android:background="@color/blue"  
+				/>
+	   		
+	   		<LinearLayout android:layout_width="match_parent"
+	   		    android:layout_height="wrap_content"
+	   		    android:layout_marginLeft="10dp"
+	   		    android:layout_marginRight="10dp"
+	   		    android:layout_marginTop="20dp"
+	   		    android:layout_marginBottom="50dp"
+	   		    android:background="@drawable/blank_with_corner"
+	   		    android:orientation="vertical"
+	           	android:focusable="true" 
+				android:focusableInTouchMode="true"
+	   		    >
+	   		    <EditText android:id="@+id/search_name_text"
+	   		       	 android:layout_width="fill_parent"
+	           		 android:layout_height="40dp"
+	           		 android:layout_marginTop="5dp"
+	           		 android:layout_marginBottom="5dp"
+	           		 android:layout_marginLeft="5dp"
+	           		 android:layout_marginRight="5dp"
+	           		 android:background="@drawable/login_input_bg"
+	           		 android:singleLine="true"
+	   		         android:hint="输入姓名的中文，拼音或首字母"/>
+	   		    
+	   		    
+	   		</LinearLayout>
+	   		
+		</LinearLayout>
+	</ScrollView>
+    </LinearLayout>
+</RelativeLayout>

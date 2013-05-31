@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- login page -->
+    <dimen name="login_page_margin_top">50dp</dimen>
+    <!-- head -->
+	<dimen name="head_height">50dp</dimen>   
+	
+	<!-- brief item -->
+	<dimen name="brief_item_height">55dp</dimen>
+</resources>

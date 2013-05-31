@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    
+    <LinearLayout  android:id="@+id/ruson_loading_main"
+         	android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical"
+		    android:gravity="center_horizontal|center_vertical" 
+		    android:background="#22808080">
+    
+	    <LinearLayout android:layout_width="250dp"
+				    android:layout_height="220dp"
+				    android:gravity="center_horizontal|center_vertical"
+				    android:background="#55808080"
+				    android:layout_marginTop="20dp"
+		            android:layout_marginBottom="20dp"
+		            android:orientation="vertical"
+				    >
+				    <ProgressBar
+				        android:layout_width="50dp"
+				        android:layout_height="50dp"
+				        android:layout_gravity="center_vertical|center_horizontal" 
+				      />
+		</LinearLayout>
+    </LinearLayout>
+</LinearLayout>
