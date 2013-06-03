@@ -53,11 +53,16 @@
 		            <TextView android:id="@+id/contact_name"
 		                android:layout_width="0dp"
 		                android:layout_height="wrap_content"
-		                android:layout_weight="5"
+		                android:layout_weight="3"
 		                android:textSize="16sp"
 		                android:textColor="@color/black"
 		                android:text="content"/>
-		         
+		          <ImageButton android:id="@+id/save_contact_btn"
+		                android:layout_width="0dp"
+		                android:layout_height="match_parent"
+		                android:layout_weight="2"
+		                android:background="#00000000"
+		                android:src="@drawable/add_contact_btn"/>
 		        </LinearLayout>
 		        
 		        <View  
@@ -196,8 +201,9 @@
 					   android:background="@color/gainsboro"  
 				/>
 		         
-		          <!-- mobilephone -->
-		         <LinearLayout android:layout_width="match_parent"
+		         <!-- mobilephone -->
+		         <LinearLayout android:id="@+id/mobileline" 
+		             android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:paddingTop="10dp"
        				android:paddingBottom="10dp"
@@ -220,22 +226,99 @@
 		                android:textColor="@color/black"
 		                android:text="content"/>
 		           
-		             <ImageButton android:id="@+id/call_mobile_btn"
+		             <ImageButton android:id="@+id/view_operator_btn"
 		                android:layout_width="0dp"
 		                android:layout_height="match_parent"
 		                android:layout_weight="2"
 		                android:background="#00000000"
-		                android:src="@drawable/call_btn_selector"/>
+		                android:src="@drawable/down_arrow"/>
 		             
 		        </LinearLayout>
+		        
+		         <!-- mobilephone operator -->
+
+		         <LinearLayout
+		             android:id="@+id/contact_operator_line"
+		             android:layout_width="match_parent"
+		             android:layout_height="70dp"
+		             android:gravity="center_vertical"
+		             android:background="#F0F0F0"
+		             android:layout_marginLeft="0.5dp"
+		             android:layout_marginRight="0.5dp"
+		             android:visibility="gone"
+		             android:orientation="vertical" >
+		             
+		              <View  
+					   android:layout_width="fill_parent"  
+					   android:layout_height="1dp" 
+					   android:background="@color/gainsboro"  
+						/>
+		              
+						  <LinearLayout
+				             android:layout_width="match_parent"
+				             android:layout_height="wrap_content"
+				             android:gravity="center_vertical"
+				             android:orientation="horizontal">
+				             
+						      <LinearLayout android:id="@+id/send_sms_btn"
+						         android:orientation="vertical"
+						         android:layout_height="wrap_content"
+						         android:layout_width="0dp"
+				                 android:layout_weight="2"
+				                 android:background="@drawable/dialog_btn_bg"
+				                 android:gravity="center_horizontal">
+					             <ImageButton
+					                 
+				                 android:layout_marginTop="15dp"
+					                 android:layout_width="wrap_content"
+					                 android:layout_height="wrap_content"
+					                 android:background="#00000000"
+					                 android:src="@drawable/send_sms"
+					                 android:clickable="false"/>
+					             
+					              <TextView android:layout_height="wrap_content"
+					                 android:layout_width="wrap_content"
+					                 android:textSize="10sp"
+					                 android:textColor="@color/black"
+					                 android:layout_marginTop="5dp"
+				                 android:layout_marginBottom="15dp"
+					                 android:text="发短信"/>
+				             </LinearLayout>
+				             
+						      
+							 <LinearLayout 
+							     android:id="@+id/call_mobile_btn"
+							     android:orientation="vertical"
+						         android:layout_height="wrap_content"
+						         android:layout_width="0dp"
+				                 android:layout_weight="2"
+				                 android:background="@drawable/dialog_btn_bg"
+				                 android:gravity="center_horizontal">
+					             <ImageButton
+				                 android:layout_marginTop="15dp"
+					                 android:layout_width="wrap_content"
+					                 android:layout_height="wrap_content"
+					                 android:background="#00000000"
+					                 android:src="@drawable/phone_btn_pressed"
+					                 android:clickable="false" />
+					             
+					              <TextView android:layout_height="wrap_content"
+					                 android:layout_width="wrap_content"
+					                 android:textSize="10sp"
+					                 android:textColor="@color/black"
+					                 android:layout_marginTop="5dp"
+				                 android:layout_marginBottom="15dp"
+					                 android:text="打电话"/>
+				             </LinearLayout>
+				         </LinearLayout>
+		         </LinearLayout>
 		        
 		         <View  
 					   android:layout_width="fill_parent"  
 					   android:layout_height="1dp" 
 					   android:background="@color/gainsboro"  
 				/>
-		         
-		       
+		      	
 		        <!-- 小号 -->
 		        <LinearLayout android:layout_width="match_parent"
 		            android:layout_height="wrap_content"

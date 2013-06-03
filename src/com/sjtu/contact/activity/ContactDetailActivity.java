@@ -1,21 +1,28 @@
 package com.sjtu.contact.activity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.sjtu.contact.R;
 import com.sjtu.contact.UI.Util.DialogUtil;
 import com.sjtu.contact.pojo.Contact;
 import com.sjtu.contact.util.EmailUtil;
+import com.sjtu.contact.util.Logger;
 import com.sjtu.contact.util.StringUtil;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.CommonDataKinds.Organization;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.CommonDataKinds.StructuredName;
+import android.provider.ContactsContract.Contacts.Data;
+import android.provider.ContactsContract.RawContacts;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -91,13 +98,39 @@ public class ContactDetailActivity extends Activity{
 	
 	private void initButtons()
 	{
+		//bind save contact btn
+		boolean isContactSaveable = true;
+		if(contact.getOfficePhone().equals("")
+				&&contact.getMobilePhone().equals("")
+				&&contact.getSubPhone().equals(""))
+		{
+			isContactSaveable = false;
+		}
+		
+
+		View saveContactBtn = findViewById(R.id.save_contact_btn);
+		if(!isContactSaveable)
+		{
+			saveContactBtn.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			saveContactBtn.setOnClickListener(new OnClickListener(){
+	
+				@Override
+				public void onClick(View arg0) {
+					OnSaveContact(contact);
+				}
+			});
+		}
+		
+		//config back button
 		OnClickListener ocl = new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
-			
 		};
 		
 		backButton.setOnClickListener(ocl);
@@ -124,43 +157,80 @@ public class ContactDetailActivity extends Activity{
 			call_office_btn.setVisibility(View.INVISIBLE);
 		}
 		
-		//call_mobile_btn
-//		TextView mobileText = (TextView) findViewById(R.id.contact_mobilephone);
-//		String mobileNumber = mobileText.getText().toString().trim();
-//		ImageButton call_mobile_btn = (ImageButton) findViewById(R.id.call_mobile_btn);
-//		if (mobileNumber != null && !mobileNumber.equals("") && StringUtil.isPhone(mobileNumber)) {
-//			call_mobile_btn.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					TextView mobileText = (TextView) findViewById(R.id.contact_mobilephone);
-//					String mobileNumber = mobileText.getText().toString().trim();
-//					
-//					onCallPhone(mobileNumber);
-//				}
-//
-//			});
-//		}
-//		else
-//		{
-//			call_mobile_btn.setVisibility(View.INVISIBLE);
-//		}
+		//view_operator_btn
+		TextView mobileText = (TextView) findViewById(R.id.contact_mobilephone);
+		String mobileNumber = mobileText.getText().toString().trim();
+		final ImageButton view_operator_btn = (ImageButton) findViewById(R.id.view_operator_btn);
+		if (mobileNumber != null && !mobileNumber.equals("") && StringUtil.isPhone(mobileNumber)) {
+			
+			//bind view operator btn
+			view_operator_btn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					
+					final View operatorLine = findViewById(R.id.contact_operator_line);
+					
+					if(operatorLine.getVisibility() == View.GONE)
+					{
+						operatorLine.setVisibility(View.VISIBLE);
+						view_operator_btn.setImageResource(R.drawable.up_arrow);
+					}
+					else
+					{
+						operatorLine.setVisibility(View.GONE);
+						view_operator_btn.setImageResource(R.drawable.down_arrow);
+					}
+				}
+			});
+			
+			//bind call phone 
+			View callPhoneBtn = findViewById(R.id.call_mobile_btn);
+			callPhoneBtn.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					
+					TextView mobileText = (TextView) findViewById(R.id.contact_mobilephone);
+					String mobileNumber = mobileText.getText().toString().trim();
+					
+					onCallPhone(mobileNumber);
+				}
+			});
+			
+			//bind send email btn
+			View sendSmsBtn = findViewById(R.id.send_sms_btn);
+			sendSmsBtn.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					
+					TextView mobileText = (TextView) findViewById(R.id.contact_mobilephone);
+					String mobileNumber = mobileText.getText().toString().trim();
+					
+					onSendSMS(mobileNumber);
+				}
+			});			
+		}
+		else
+		{
+			view_operator_btn.setVisibility(View.INVISIBLE);
+		}
 
 		// call_subphone_btn
 		TextView subPhoneText = (TextView) findViewById(R.id.contact_subphone);
-		String mobileNumber = subPhoneText.getText().toString().trim();
+		String subPhoneNumber = subPhoneText.getText().toString().trim();
 		ImageButton call_subphone_btn = (ImageButton) findViewById(R.id.call_subphone_btn);
-		if (mobileNumber != null && !mobileNumber.equals("")
-				&& StringUtil.isPhone(mobileNumber)) {
+		if (subPhoneNumber != null && !subPhoneNumber.equals("")
+				&& StringUtil.isPhone(subPhoneNumber)) {
 			call_subphone_btn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					TextView mobileText = (TextView) findViewById(R.id.contact_subphone);
-					String mobileNumber = mobileText.getText().toString()
+					TextView subPhoneText = (TextView) findViewById(R.id.contact_subphone);
+					String subPhoneNumber = subPhoneText.getText().toString()
 							.trim();
 
-					onCallPhone(mobileNumber);
+					onCallPhone(subPhoneNumber);
 				}
 
 			});
@@ -194,7 +264,104 @@ public class ContactDetailActivity extends Activity{
 		}
 	}
 	
+	private void OnSaveContact(final Contact contact) {
+		
+		DialogInterface.OnClickListener ocl_OK = new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				doAddContact(contact);
+			}
+		};
+		
+		DialogInterface.OnClickListener ocl_Cancel = new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				
+			}
+		};
+		DialogUtil.showOptionDialog(ContactDetailActivity.this, "确定要保存该联系人么？", ocl_OK , ocl_Cancel );
+		
+	}
 	
+	private void doAddContact(Contact contact)
+	{
+		ContentValues values = new ContentValues();  
+        /* 
+         * 首先向RawContacts.CONTENT_URI执行一个空值插入，目的是获得系统返回的rawContactId 
+         */  
+        Uri rawContactUri = getContentResolver().insert(RawContacts.CONTENT_URI, values);  
+        long rawContactId = ContentUris.parseId(rawContactUri);  
+        
+        //往data表里写入姓名数据  
+        values.clear();  
+        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+        values.put(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE); //内容类型  
+        values.put(StructuredName.GIVEN_NAME, contact.getName());  
+        getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);  
+        
+        //添加单位数据
+        String inst = contact.getInst();
+        if(!(inst.equals("")))
+        {
+	        values.clear();
+	        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+	        values.put(Data.MIMETYPE, Organization.CONTENT_ITEM_TYPE);
+	        values.put(Organization.COMPANY, inst);  
+	        
+	        String pos = contact.getPosition();
+	        if(!(pos.equals("")))
+	        {
+	        	values.put(Organization.TITLE, pos);  
+	        }
+	        values.put(Organization.TYPE, Organization.TYPE_WORK);
+	        getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);
+        }
+        
+        //往data表里写入手机号码  
+        String mobilePhone = contact.getMobilePhone();
+        if(!(StringUtil.isPhone(mobilePhone)))
+        {
+        	mobilePhone = contact.getSubPhone();
+        }
+        if(StringUtil.isPhone(mobilePhone))
+        {
+	        values.clear();  
+	        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+	        values.put(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);  
+	        values.put(Phone.NUMBER, mobilePhone);  
+	        values.put(Phone.TYPE, Phone.TYPE_MOBILE);  
+	        getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);  
+        }
+        
+        String officePhone = contact.getOfficePhone();
+        if(StringUtil.isPhone(officePhone))
+        {
+	        values.clear();  
+	        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+	        values.put(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);  
+	        values.put(Phone.NUMBER, officePhone);  
+	        values.put(Phone.TYPE, Phone.TYPE_WORK);  
+	        getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);  
+        }
+        
+        //往data表里写入Email的数据  
+        String email = contact.getEmail();
+        if(StringUtil.isEmail(email))
+        {
+	        values.clear();  
+	        values.put(Data.RAW_CONTACT_ID, rawContactId);  
+	        values.put(Data.MIMETYPE, Email.CONTENT_ITEM_TYPE);  
+	        values.put(Email.DATA, email);  
+	        values.put(Email.TYPE, Email.TYPE_WORK);  
+	        getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);
+        }
+       
+        
+        Toast.makeText(this, "保存联系人成功", Toast.LENGTH_SHORT).show();
+	}
+
 	private void onSendEmail(String emailAddr, String receiverName) {
 		
 		try{
@@ -235,6 +402,15 @@ public class ContactDetailActivity extends Activity{
 			}
 		};
 		DialogUtil.showOptionDialog(ContactDetailActivity.this, "确定要拨打电话吗？", ocl_OK , ocl_Cancel );
+	}
+	
+	
+	private void onSendSMS(String phoneNumber)
+	{
+		Uri uri = Uri.parse("smsto:" + phoneNumber);          
+		Intent it = new Intent(Intent.ACTION_SENDTO, uri);          
+		it.putExtra("sms_body", "");          
+		startActivity(it);
 	}
 
 }

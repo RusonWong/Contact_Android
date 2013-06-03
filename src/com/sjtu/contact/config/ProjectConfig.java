@@ -6,6 +6,7 @@ public class ProjectConfig {
 	
 //	public final static String SERVICE_URL_BASE = "218.193.187.182/index.php";
 	public final static String SERVICE_URL_BASE = "202.120.40.97:8383/index.php";
+//	public final static String SERVICE_URL_BASE = "202.120.63.178:8881/index.php";
 	
 	//contact service config
 	public final static String SERVICE_URL_CONTACT = SERVICE_URL_BASE + "/contact";

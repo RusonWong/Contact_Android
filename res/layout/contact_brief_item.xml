@@ -11,9 +11,9 @@
         android:background="@drawable/contact_brief_item_selector">
         
         <LinearLayout android:id="@+id/select_tip"
-            android:layout_width="10dp"
+            android:layout_width="5dp"
             android:layout_height="fill_parent"
-           />"
+           />
         
         <LinearLayout 
              android:layout_height="match_parent"
